@@ -1,0 +1,5 @@
+wget https://www.buy-realtraffic.com/radmin/cron_bulk_email_step1.php >/dev/null
+
+
+
+wget https://www.buy-realtraffic.com/radmin/cron_bulk_email_step2.php >/dev/null

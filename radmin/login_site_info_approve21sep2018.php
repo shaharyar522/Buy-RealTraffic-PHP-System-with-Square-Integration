@@ -1,0 +1,462 @@
+<?
+include'../config.php';
+require_login_admin();
+$title="$CONFIG->sitename login_site list_all Info";
+include("$CONFIG->templatedir/header.php");
+
+
+?>
+<script>
+
+
+ function update_frm(){
+     document.step1frm.action="login_site_info_approve.php";
+     document.step1frm.act.value="edit";
+     document.step1frm.submit();
+  }
+
+
+
+  function delete_frm(){
+     document.step1frm.action="login_site_info_approve.php";
+     document.step1frm.act.value="delete";
+     document.step1frm.submit();
+  }
+
+
+  function confirmation() {
+	var answer = confirm("Are you sure to delete this site details?")
+	if (answer){
+		return delete_frm();
+	}
+	else{
+		alert("Thanks for sticking around !")
+	}
+ }
+</script>
+<?
+
+
+
+
+
+function get_login_sid_to_uid($sid){
+    $sel_name = "SELECT user_id FROM url_login_sites WHERE sid = '$sid'";
+    $res_name = mysqli_query($GLOBALS["___mysqli_ston"], $sel_name) or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sel_name);
+    $row_name = mysqli_fetch_array($res_name);
+    return $row_name['user_id'];
+}//EndFunction
+
+
+
+
+
+//sssssssss 1-9-2018
+function isValidURL($url) {
+  return preg_match('|^http(s)?://['a-z0-9-']+(.['a-z0-9-']+)*(:[0-9]+)?(/.*)?$|i', $url);
+}
+
+  if($_REQUEST['act'] == 'edit'){ 
+             $uc_id  = get_login_sid_to_uid($_REQUEST['sd']);
+      $sql_cde   = "SELECT points from url_login_clicks WHERE user_id = '$uc_id'  and site_id != '$_REQUEST['sd']' "; 
+             $res_cde   = mysqli_query($GLOBALS["___mysqli_ston"], $sql_cde) or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sql_cde);
+             $other_pts = 0;           
+
+                while($row_cde   = mysqli_fetch_array($res_cde)){
+                      $other_pts = ($row_cde['points'] + $other_pts) ;
+
+                }  
+   		     if(!$site_name) {
+		   	    $err_msg .= "<li>Invalid site title</li>";
+		     }
+		     if(!isValidURL($site_url)){
+		   	    $err_msg .= "<li> Please enter valid URL including http://</li>";
+             }            
+
+
+
+    $sql_xyz = "SELECT * FROM url_unassigned_login_credits WHERE user_id = '$uc_id'"; 
+    $res_xyz = mysqli_query($GLOBALS["___mysqli_ston"], $sql_xyz)or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sql_xyz);
+    $row_xyz = mysqli_fetch_array($res_xyz);
+    $cnts = '0';
+    $curr_tab_pts_xxx='0';
+	$sql_vv = "SELECT * FROM url_login_sites  WHERE user_id = '$uc_id' order by sid ASC"; 
+	$res_vv = mysqli_query($GLOBALS["___mysqli_ston"], $sql_vv)or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sql_vv);
+	while($row_vv = mysqli_fetch_array($res_vv)) {
+          $site_points       = login_site_balance($row_vv[0]);
+          $curr_tab_pts_xxx  = ($site_points + $curr_tab_pts_xxx);
+          $cnts++;
+	}
+
+          $curr_frm_pts      = ($_REQUEST['site_pt'] + $other_pts ); 
+          $curr_ac_pts       = $row_xyz['login_credits'];
+          $curr_tab_pts      = $curr_tab_pts_xxx;
+           if($curr_tab_pts == '0'){
+               if($curr_ac_pts < $curr_frm_pts){
+                  $err_msg_pt = "<li> You have $curr_ac_pts Unassigned Users only.</li>";
+               }//
+
+               if($curr_ac_pts >= $curr_frm_pts){
+                  $Pending = ($curr_ac_pts - $curr_frm_pts);
+               }//
+               if($curr_ac_pts < $curr_frm_pts){
+                  $Pending = ($curr_ac_pts - $curr_frm_pts);
+               }//
+
+          }
+
+         if($curr_tab_pts != '0'){
+             $rem_pts = $curr_ac_pts+$curr_tab_pts-$curr_frm_pts;
+
+             if($rem_pts>=0){
+				$Pending = $rem_pts;
+			}
+			else{
+				$err_msg_pt = "<li> You have $curr_ac_pts Unassigned Users only.</li>";
+			}
+         }
+
+     $err_msg .=  $err_msg_pt;
+
+
+
+ 			 if(!$err_msg) {
+  					       $sql = "UPDATE url_login_sites   SET
+                                                       site_name   = '$site_name',
+                                                       site_url    = '$site_url',
+                                                       status      = '$site_status',
+                                                       edit_time   = now()
+                                   WHERE sid = '$_REQUEST['sd']' ";  
+
+  			     $res = mysqli_query($GLOBALS["___mysqli_ston"], $sql)or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sql);
+                   //update_banner_status($_REQUEST['owner_id']);
+                   //update_textAdds_status($_REQUEST['owner_id']);
+     					   $err_msg = "<li>Site Details has updated";
+  
+  	    $sql_req = "UPDATE  url_unassigned_login_credits SET login_credits = '$Pending' WHERE user_id = '$uc_id' ";
+
+ 	    $res_req = mysqli_query($GLOBALS["___mysqli_ston"], $sql_req)or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sql_req);
+  
+        $ups_del = "UPDATE url_login_clicks set points = '$_REQUEST['site_pt']' WHERE site_id = '$_REQUEST['sd']' limit 1"; 
+
+        $ups_del = mysqli_query($GLOBALS["___mysqli_ston"], $ups_del) or die(mysqli_error($GLOBALS["___mysqli_ston"]).$ups_del);  
+
+         echo "<META HTTP-EQUIV='Refresh' CONTENT='2; URL=login_site_info_approve.php?sd=$_REQUEST['sd']&setemp=$err_msg&#SITE-LOGIN'>";
+
+         exit();  
+      } else{
+
+   echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL=login_site_info_approve.php?sd=$_REQUEST['sd']&setemp=$err_msg&#SITE-LOGIN'>";
+           exit();
+           }
+   }
+
+//sssssssss 1-9-2018
+
+
+
+
+
+
+
+
+
+
+
+        if($_REQUEST['act'] == 'delete'){ 
+      $sx_pts = login_site_balance($_REQUEST['sd']);
+     $uc_id  = get_login_sid_to_uid($_REQUEST['sd']); 
+
+/*
+        $sql_xyz = "SELECT login_credits FROM url_unassigned_login_credits WHERE user_id = '$uc_id' ";
+ 	       $res_xyz = mysql_query($sql_xyz)or die(mysql_error().$sql_xyz);
+           $row_xyz = mysql_fetch_array($res_xyz);
+           $my_full_pts = $row_xyz['login_credits'];
+           $updates_pts = ($my_full_pts + $sx_pts);
+
+ echo $sql_reqx = "UPDATE  url_unassigned_login_credits SET login_credits = '$updates_pts'  WHERE user_id = '$uc_id' "; exit;
+ 	       $res_reqx = mysql_query($sql_reqx)or die(mysql_error().$sql_reqx);
+*/
+	   	   $sql = "DELETE FROM url_login_sites   WHERE sid = '$_REQUEST['sd']' LIMIT 1";  
+		   $res = mysqli_query($GLOBALS["___mysqli_ston"], $sql)or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sql);
+
+
+  		//   $sql_xx = "DELETE FROM url_login_clicks  WHERE site_id = '$_REQUEST['sd']'";
+ 		//   $res_xx = mysql_query($sql_xx)or die(mysql_error().$sql_xx);
+/*
+	   	   $sql_cc = "DELETE FROM url_login_clicks  WHERE site_id = '$_REQUEST['sd']' LIMIT 1";
+ 		   $res_cc = mysql_query($sql_cc)or die(mysql_error().$sql_cc);
+*/
+           $err_msg = "Your select site has deleted";
+   echo "<META HTTP-EQUIV='Refresh' CONTENT='0; URL=login_site_info_approve.php?ud=$uc_id&setemp=$err_msg&#SITE-LOGIN'>";
+           exit();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+function login_site_meet($sid){
+    $sel_count = "SELECT visitors_received FROM url_login_clicks WHERE site_id = '$sid'";
+    $res_count = mysqli_query($GLOBALS["___mysqli_ston"], $sel_count) or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sel_count);
+    $row_count_info = mysqli_fetch_row($res_count);
+    return $row_count_info[0];
+}//EndFunction
+
+
+
+
+
+function login_site_balance($sid){
+    $sel_count = "SELECT points FROM url_login_clicks WHERE site_id = '$sid'";
+    $res_count = mysqli_query($GLOBALS["___mysqli_ston"], $sel_count) or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sel_count);
+    $row_count_info = mysqli_fetch_row($res_count);
+    return $row_count_info[0];
+}//EndFunction
+
+
+        $sel_dis = "SELECT * from url_login_sites  WHERE sid = '$_REQUEST['sd']'";
+        $res_dis = mysqli_query($GLOBALS["___mysqli_ston"], $sel_dis) or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sel_dis);
+        $row_dis = mysqli_fetch_array($res_dis);
+
+        $site_name=$row_dis['site_name'];
+         $site_url=$row_dis['site_url'];
+         $new_time=$row_dis['new_time'];
+         $edit_time=$row_dis['edit_time'];
+
+         $uname=$row_dis['user_id'];
+         $status=$row_dis['status'];
+ $sd=$_REQUEST['sd'];
+
+        $site_balance = login_site_balance($sd);
+        $site_pt=$site_balance;
+
+
+
+        $site_views = login_site_meet($sd);
+        $site_views=$site_views;
+
+        $meet_time = login_site_meet($sd);
+        $meet_time=$meet_time;
+
+
+
+        if($row_dis['status'] == 'W') { $status_w='SELECTED'; }
+        if($row_dis['status'] == 'L') { $status_l='SELECTED'; }
+        if($row_dis['status'] == 'H') { $status_h='SELECTED'; }
+        if($row_dis['status'] == 'A') { $status_a='SELECTED'; }
+
+
+
+
+
+
+
+
+$page_content = "<div class=text id=heading  align=center><h3> Login Site Info Approved Page </h3></div>";
+
+
+
+
+$page_content .="<table width=90%  cellpadding=0 cellspacing=0 border=0>
+  <td  align=right>&nbsp;&nbsp;</td>
+  </tr>
+</table>
+<form name=step1frm action=edit_users_new.php method=post enctype=multipart/form-data>
+<table width=600  cellspacing=0 cellpadding=0  border=0 align=center>";
+
+ $error_temp = $_REQUEST['setemp'];
+  if (  isset($error_temp) &&  $error_temp!=null ){
+
+  $page_content .="  <tr><td align=center colspan=2 >"; $page_content .=$error_temp; $page_content .="</td></tr>";
+  }
+$page_content .="</table>
+<br>
+<table width=500  cellspacing=0 cellpadding=0  border=0 align=center>
+<tr><td >Login Site Details</td></tr>
+<tr>
+   <td align=left height=35 colspan=4 >&nbsp;&nbsp;</td>
+    <tr><td valign=top >
+     <table width=100% border=0 align=center>
+         <tr>
+           <td width=15%>&nbsp;&nbsp;</td>
+ 	       <td width=35% align=left height=35 >&nbsp;&nbsp;Owned by#</td>
+   	       <td width=35% align=left  height=35>{$uname}&nbsp;&nbsp;<a href='edit_users_new.php?ud=$uname'>['^']</a></td>
+           <input type=hidden name='owner_id' value='$uname' >
+           <td width=15%>&nbsp;&nbsp;</td>
+
+         </tr>
+         <tr>
+           <td width=15%>&nbsp;&nbsp;</td>
+ 	       <td width=35% align=left height=35 >&nbsp;&nbsp;Site Name</td>
+   	       <td width=35% align=left  height=35><input type=text name='site_name' value='$site_name' ></td>
+           <td width=15%>&nbsp;&nbsp;</td>
+         </tr>
+         <tr>
+           <td width=15%>&nbsp;&nbsp;</td>
+           <td width=35% align=left height=35  >&nbsp;&nbsp;Site URL</td>
+   	       <td width=35% align=left  height=35><input type=text name='site_url' value='$site_url' ></td>
+           <td width=15%>&nbsp;&nbsp;</td>
+        </tr>
+         <tr>
+           <td width=15%>&nbsp;&nbsp;</td>
+	       <td nowrap width=35% align=left height=35 >&nbsp;&nbsp;Visitors Assigned</td>
+   	       <td width=35% align=left  height=35><input type=text name='site_pt' value='$site_pt'  
+
+                                                                    ONKEYPRESS='if (document.layers)
+                                                                     var c = event.which;
+                                                                     else if (document.all)
+                                                                     var c = event.keyCode;
+                                                                     else
+                                                                      var c = event.charCode;
+                                                                      var s = String.fromCharCode(c);
+                                                                      if(c!=0) return /[0-9]/.test(s); else return;'></td>
+           <td width=15%>&nbsp;&nbsp;</td>
+        </tr>
+         <tr>
+           <td width=15%>&nbsp;&nbsp;</td>
+	       <td width=35% align=left height=35  >&nbsp;&nbsp;Visitors Received</td>
+   	       <td width=35% align=left  height=35>$site_views</td>
+           <td width=15%>&nbsp;&nbsp;</td>
+        </tr>
+         <tr>
+           <td width=15%>&nbsp;&nbsp;</td>
+	       <td width=35% align=left height=35  >&nbsp;&nbsp;Status</td>
+   	       <td width=35% align=left  height=35>
+    	     <select name='site_status' >
+                 <option value='W' $status_w>Waiting For Approval</option>
+                 <option value='L' $status_l>Active</option>
+                 <option value='H' $status_h>Paused</option>
+                 <option value='A' $status_a>Suspended</option>
+
+             </select>
+            </td>
+           <td width=15%>&nbsp;&nbsp;</td>
+        </tr>
+        <tr><td width=100% colspan=3>&nbsp;&nbsp;</td></tr>
+      </table>
+   </td>
+  </tr>
+  <tr><td align=left height=35 colspan=4 class=tdimage1>&nbsp;&nbsp;</td></tr>
+ </table>
+    <input type=hidden name=act     value='1'>
+    <input type=hidden name=mode    value='1'>
+    <input type=hidden name=sd      value='$sd' >
+    <input type=hidden name=ud      value='$uname' >
+
+<table width=100% class=menubar cellpadding=0 cellspacing=0 border=0>
+
+  <td  width=40%>&nbsp;&nbsp;</td>
+
+  <td   align=right>
+        <table width=20% cellpadding=0 cellspacing=2 border=0 id=toolbar>
+          <tr valign=middle align=center>
+             <td align=right><INPUT name=Update   onclick=update_frm()   type=submit  value=Update></td>
+             <td align=right><INPUT name=Delete  class='btn' onclick=confirmation()   type=submit  value=Delete></td>
+         </tr>
+         <tr><td align=left height=35 colspan=2 class=tdimage1>&nbsp;&nbsp;</td></tr>
+        </table>
+   </td>
+ </tr>
+</table>
+</form>";
+
+
+
+
+
+
+	$sql_ssv = "SELECT * FROM url_login_sites WHERE user_id = '$uname' order by sid ASC";
+	$cntsas = '0';
+	$res_ssv = mysqli_query($GLOBALS["___mysqli_ston"], $sql_ssv)or die(mysqli_error($GLOBALS["___mysqli_ston"]).$sql_ssv);
+
+
+ $num_rem_satt = mysqli_num_rows($res_ssv);
+
+
+$page_content .= "<div align=center><b>#User Login Sites</b><br><br></div>";
+
+
+
+
+$page_content .= " <table border=0  cellpadding=3 cellspacing=0 width=700 align=center >
+         <tr >
+          <td align=left class='textbld' >Site name</td>
+          <td align=left class='textbld' >Site URL</td>
+          <td align=left class='textbld' >Visitors<br>Assigned</td>
+          <td align=left class='textbld' >Visitors<br>Received</td>
+          <td align=left class='textbld' >Status</td>
+         </tr>
+
+         <tr><td class='horizontal_dotted_line' colspan=5>&nbsp;&nbsp;</td></tr>";
+
+
+while($row_ssv = mysqli_fetch_array($res_ssv)) { 
+
+
+        $page_content .= " <tr>             
+
+		<td align=left  style=word-wrap: break-word width=80>";
+ $page_content .= stripslashes($row_ssv['site_name']);
+ $page_content .= "</td>
+
+		       <td align=left  style=word-wrap: break-word width=280><a href='login_site_info_approve.php?sd=$row_ssv['sid']'>";
+
+ $page_content .=stripslashes($row_ssv['site_url']);
+ $page_content .="</a></td>
+		       <td align=left>";
+ $page_content .=login_site_balance($row_ssv[0]);
+                     
+ $page_content .="  </td>
+
+		       <td align=left >";
+ $page_content .= login_site_meet( $row_ssv[0] );
+ $page_content .="</td>
+               <td align=left >";
+
+if(stripslashes($row_ssv['status'])=='W')
+ $page_content .= 'WAITING';
+
+if(stripslashes($row_ssv['status'])=='L')
+ $page_content .= 'ACTIVE';
+
+if(stripslashes($row_ssv['status'])=='H')
+ $page_content .= 'PAUSED';
+
+if(stripslashes($row_ssv['status'])=='A')
+ $page_content .= 'SUSPENDED';
+
+
+
+        $page_content .= "</td>
+
+		     </tr>";
+}
+
+
+if(  $num_rem_satt == 0  ) {
+$page_content .= " <tr>
+		  <td colspan=5 align=center><b><font color=red>No site in list</font></b></td>
+	       </tr>";
+             }
+     
+$page_content .="</table>";
+
+
+
+
+
+
+
+
+
+
+include("$CONFIG->templatedir/admin.content.php");
+include("$CONFIG->templatedir/footer.php");

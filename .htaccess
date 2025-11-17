@@ -1,0 +1,58 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} buy-realtraffic\.com [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://buy-realtraffic.com/$1 [R,L]
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+deny from 204.79.197.200
+
+
+### php handler provided by phpupgrader ###
+#AddHandler application/x-httpd-eig-php8.0 .php
+deny from 155.93.238.240
+deny from 123.20.184.169
+deny from 114.39.226.90
+deny from 184.179.216.137
+deny from 81.10.5.61
+deny from 185.221.253.107
+deny from 116.104.64.224
+deny from 113.172.152.23
+deny from 193.32.68.68
+deny from 183.89.215.114
+deny from 95.169.32.76
+deny from 116.58.232.5
+deny from 5.142.15.158
+deny from 140.112.50.245
+deny from 94.112.181.44
+deny from 115.79.114.229
+deny from 91.127.199.42
+deny from 110.78.151.184
+deny from 101.235.30.186
+deny from 14.231.52.157
+deny from 202.166.194.242
+deny from 41.34.27.122
+deny from 220.156.167.132
+deny from 113.161.94.131
+deny from 178.121.177.7
+deny from 156.200.97.210
+deny from 156.204.67.41
+deny from 201.131.185.77
+deny from 123.20.10.62
+deny from 178.46.167.194
+deny from 197.61.25.34
+deny from 37.189.29.218
+deny from 14.231.150.97
+deny from 68.148.164.5
+deny from 187.109.166.103
+deny from 185.224.102.248
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php81” package as the default “PHP” programming language.
+<IfModule mime_module>
+#  AddHandler application/x-httpd-ea-php81___lsphp .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

@@ -1,0 +1,33 @@
+S.No         =  2310 
+mailto       = drichmond@waynesville.k12.mo.us  
+mailsubject  = Maurice, Email Test 8 Please Disregard  
+mail_content = Maurice<br />
+<br />
+Your User ID:  gotigers<br />
+<br />
+Your Password:  aussie59<br />
+<br />
+Log In:  <a href='https://www.buy-realtraffic.com'>https://www.buy-realtraffic.com</a><br /><br /><br /><br />If you do not want to receive emails from us, please click the link below to delete your account.<br /> <a href='https://www.buy-realtraffic.com/opt_out.php?user_id=2310'>Delete Account</a><br /><br />  
+mailHeader   = From: admin@buy-realtraffic.com<admin@buy-realtraffic.com>
+X-Sender: admin@buy-realtraffic.com 
+Content-type:text/html;charset=UTF-8
+Content-type:text/html;charset=UTF-8
+Return-Path: admin@buy-realtraffic.com 
+Error-To: admin@buy-realtraffic.com 
+X-Mailer: www.buy-realtraffic.com 
+  
+Your mail deliverd  
+
+******* last mail ************** 
+S.No               => FINAL 134 
+global_admin_email => admin@buy-realtraffic.com  
+mailsubjectx       => Mail sent to all the members  
+mail_contentx      => This is an automatic email message to inform about the last bulk email sent to all the members  
+mailHeader         = >From: admin@buy-realtraffic.com<admin@buy-realtraffic.com>
+X-Sender: admin@buy-realtraffic.com 
+Content-type:text/html;charset=UTF-8
+Return-Path: admin@buy-realtraffic.com 
+Error-To: admin@buy-realtraffic.com 
+X-Mailer: www.buy-realtraffic.com 
+  
+last mail send   

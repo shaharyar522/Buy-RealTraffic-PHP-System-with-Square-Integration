@@ -1,0 +1,362 @@
+<?
+error_reporting(E_ALL & ~E_WARNING & ~E_DEPRECATED);
+require_once("db_connect.php");
+
+class myclass {
+  // Properties
+  public $wwwroot;
+  public $sitename;
+  public $templatedir;
+  public $adminfee;
+  public $sponsorfee;
+  public $sponsorfee_free;
+  
+  //public $login_timer;
+  
+  public $adminfee_free;
+  public $footer_banners;
+  public $colorscheme;
+  public $siteurl;
+  
+  public $libdir;
+  public $imagedir;
+  public $header_textads;
+  public $header_banners;
+  public $footer_textads;
+  public $cb_footer_textads;
+  
+  public $darkcolor;
+  public $bgcolor;
+  public $lightcolor;
+  public $showstats;
+  public $support;
+//public $sitename;
+//public $paymentnote;
+//public $paymentnote2;
+//public $payrandom;
+//public $sendemail;
+//public $sendto;
+//public $adminfee;
+//public $sponsorfee;
+//public $randomfee;
+//public $sponsorfee_free;
+//public $adminfee_free;
+public $weight2;
+public $weight5;
+public $weight10;
+public $weight15;
+public $weight25;
+public $weight50;
+public $weight100;
+public $weight250;
+public $allowpaypal;
+public $allowstormpay;
+public $allowegold;
+public $allowlibertyreserve;
+public $allowassuredpay;
+public $allowsolidtrustpay;
+public $allowfleetpay;
+public $allowdollardeliverys;
+public $allowmoneybookers;
+public $affiliateusername;
+public $primu;
+public $adminul;
+public $complete;
+public $add2;
+public $add5;
+public $add10;
+public $add15;
+public $add25;
+public $add50;
+public $add100;
+public $add250;
+}
+
+$CONFIG = new myclass();
+
+// $CONFIG->wwwroot = '/home/buyreal/public_html/';
+$CONFIG->wwwroot = 'C:/xampp/htdocs';
+$CONFIG->sitename    = "Buy-RealTraffic.com";
+$CONFIG->templatedir = "$CONFIG->wwwroot/templates";
+$CONFIG->adminfee="25.00";
+$CONFIG->sponsorfee="25.00";
+
+//$CONFIG->login_timer = "250";
+
+$CONFIG->sponsorfee_free="10.00";
+$CONFIG->adminfee_free="40.00";
+$CONFIG->footer_banners=true;
+// $CONFIG->siteurl     = "https://www.buy-realtraffic.com";
+$CONFIG->siteurl     = "http://localhost";
+$CONFIG->libdir      = "$CONFIG->wwwroot/lib";
+$CONFIG->imagedir    = "$CONFIG->wwwroot/rimages";
+$CONFIG->header_textads=true;
+$CONFIG->header_banners=true;
+$CONFIG->footer_textads=false;
+$CONFIG->cb_footer_textads=true;
+$CONFIG->colorscheme  = "nice_blue";
+$CONFIG->darkcolor="#336699";
+$CONFIG->bgcolor="#C0C0C0";
+$CONFIG->lightcolor="#9DC7F2";
+$CONFIG->showstats=false;
+
+
+
+$CONFIG->support     = "admin@buy-realtraffic.com";
+$CONFIG->sitename    = "Buy-RealTraffic.com";
+//$CONFIG->paymentnote="Membership";
+//$CONFIG->paymentnote2="Buy-RealTraffic.com";
+//$CONFIG->payrandom    = false;
+//$CONFIG->sendemail=true;
+//$CONFIG->sendto="admin@buy-realtraffic.com";
+//$CONFIG->adminfee="25.00";
+//$CONFIG->sponsorfee="25.00";
+//$CONFIG->randomfee="0.00";
+//$CONFIG->sponsorfee_free="10.00";
+//$CONFIG->adminfee_free="40.00";
+$CONFIG->weight2="5.00";
+$CONFIG->weight5="15.00";
+$CONFIG->weight10="25.00";
+$CONFIG->weight15="39.00";
+$CONFIG->weight25="55.00";
+$CONFIG->weight50="85.00";
+$CONFIG->weight100="140.00";
+$CONFIG->weight250="200.00";
+$CONFIG->allowpaypal=false;
+$CONFIG->allowstormpay=false;
+$CONFIG->allowegold=false;
+$CONFIG->allowlibertyreserve=false;
+$CONFIG->allowassuredpay=false;
+$CONFIG->allowsolidtrustpay=true;
+$CONFIG->allowfleetpay=false;
+$CONFIG->allowdollardeliverys=false;
+$CONFIG->allowmoneybookers=false;
+
+$CONFIG->affiliateusername="username";
+
+$CONFIG->primu=$CONFIG->siteurl."/join.php?stage=primu";
+$CONFIG->adminul=$CONFIG->siteurl."/join.php?stage=adminul";
+$CONFIG->complete=$CONFIG->siteurl."/rusers/final.php";
+$CONFIG->add2=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=2";
+$CONFIG->add5=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=5";
+$CONFIG->add10=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=10";
+$CONFIG->add15=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=15";
+$CONFIG->add25=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=25";
+$CONFIG->add50=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=50";
+$CONFIG->add100=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=100";
+$CONFIG->add250=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=250";
+
+
+require("$CONFIG->libdir/stdlib.php");
+require("$CONFIG->libdir/dblib.php");
+require("$CONFIG->libdir/genlib.php");
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+//session_register("sponsor");
+//session_register("random");
+
+//require_once("db_connect.php");
+//require_once("$CONFIG->libdir/general.php");
+
+
+//echo $CONFIG->wwwroot;
+
+
+/*
+
+//////////////////////////////////
+//       TheRandomizer script   //
+//       Version 2.0            //
+// By ITWebTeam-www.ITWebTeam.net/
+//You can edit here the main    //
+//    settings for the site     //
+//////////////////////////////////
+class object {};
+$CONFIG = new object;
+//////////////////////////////////
+//        Script Paths          //
+//////////////////////////////////
+$CONFIG->wwwroot     = "/home/buyreal/public_html/";
+//Site URL -please use the "https://www.buy-realtraffic.com" format.
+$CONFIG->siteurl     = "https://www.buy-realtraffic.com";
+//Edit below ONLY if you changed the current site structure
+$CONFIG->templatedir = "$CONFIG->wwwroot/templates";
+$CONFIG->libdir      = "$CONFIG->wwwroot/lib";
+$CONFIG->imagedir    = "$CONFIG->wwwroot/rimages";
+//////////////////////////////////
+//      Site look               //
+//////////////////////////////////
+// show the text ads in header or footer
+$CONFIG->header_textads=true;
+$CONFIG->header_banners=true;
+$CONFIG->footer_textads=false;
+
+
+                       $CONFIG->cb_footer_textads=true;
+
+
+
+$CONFIG->footer_banners=true;
+$CONFIG->colorscheme  = "nice_blue";
+//Color scheme: choose between nice_blue,almost_green,fresh,sunny
+//ENTER "custom" if you want to define your own color scheme.
+/////////////////////////////////////
+//          CUSTOM COLOR SCHEME    //
+//                                 //
+$CONFIG->darkcolor="#336699";
+$CONFIG->bgcolor="#C0C0C0";
+$CONFIG->lightcolor="#9DC7F2";
+//                                 //
+//    END OF CUSTOM COLOR SCHEME   //
+/////////////////////////////////////
+//
+$CONFIG->showstats=false;//show the site stats on the left side
+//////////////////////////////////
+//       Site Details           //
+//////////////////////////////////
+
+// The support email address-all the mails from the contact form will go there
+$CONFIG->support     = "admin@buy-realtraffic.com";
+
+//Site name-this will be shown on the header,and footer,and also on every email sent
+$CONFIG->sitename    = "Buy-RealTraffic.com";
+
+//Item Name for the payments
+$CONFIG->paymentnote="Membership";
+
+
+//Item Number for the payments
+$CONFIG->paymentnote2="Buy-RealTraffic.com";
+
+
+$CONFIG->payrandom    = false;
+
+
+/////////////////////////////////////
+//          EMAIL NOTIFICATION     //
+//    set the next variable true   //
+//to receive email notifications   //
+//       of new signups            //
+//                                 //
+$CONFIG->sendemail=true;
+//Send email to:                   //
+$CONFIG->sendto="admin@buy-realtraffic.com";
+//                                 //
+//    END OF EMAIL NOTIFICATION    //
+/////////////////////////////////////
+/////////////////////////////////////
+//         Payment Fees            //
+//    Use the same format          //
+//              XX.XX              //
+$CONFIG->adminfee="30.00";
+
+//for sponsor
+$CONFIG->sponsorfee="30.00";
+
+//for random membbers
+$CONFIG->randomfee="0.00";
+
+
+
+               $CONFIG->sponsorfee_free="15.00";
+               $CONFIG->adminfee_free="45.00";
+
+
+
+//Weight parameters:
+$CONFIG->weight2="5.00";//    2 new chances
+$CONFIG->weight5="15.00";//   5 more chances
+$CONFIG->weight10="25.00";//  10 more chances
+$CONFIG->weight15="39.00";//   15 more chances
+$CONFIG->weight25="55.00";//   25 more chances
+$CONFIG->weight50="85.00";//   50 more chances
+$CONFIG->weight100="140.00";//   100 more chances
+$CONFIG->weight250="200.00";//   200 more chances
+
+
+//                                           Payment processors
+//Change TRUE with FALSE if you don't want to use one of them.
+$CONFIG->allowpaypal=false;
+$CONFIG->allowstormpay=false;
+$CONFIG->allowegold=false;
+$CONFIG->allowlibertyreserve=false;
+$CONFIG->allowassuredpay=false;
+         $CONFIG->allowsolidtrustpay=true;
+$CONFIG->allowfleetpay=false;
+$CONFIG->allowdollardeliverys=false;
+$CONFIG->allowmoneybookers=false;
+
+
+
+ /////////////////////////////////////////
+//                AFFILIATE ID           //
+//Starting with the 2.0 version,         //
+//you can earn money with your site      //
+//promoting TheRandomizer script         //
+//Enter your TheRandomizer.net username  //
+$CONFIG->affiliateusername="username";
+//and LEAVE the "Powered by" intact      //
+//you will earn 10% from every sale      //
+//generated by you...                    //
+ /////////////////////////////////////////
+
+
+$CONFIG->primu=$CONFIG->siteurl."/join.php?stage=primu";
+$CONFIG->adminul=$CONFIG->siteurl."/join.php?stage=adminul";
+$CONFIG->complete=$CONFIG->siteurl."/rusers/final.php";
+
+$CONFIG->add2=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=2";
+$CONFIG->add5=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=5";
+$CONFIG->add10=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=10";
+$CONFIG->add15=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=15";
+$CONFIG->add25=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=25";
+$CONFIG->add50=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=50";
+$CONFIG->add100=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=100";
+$CONFIG->add250=$CONFIG->siteurl."/rusers/weight_finish.php?cat"."=250";
+
+
+require("$CONFIG->libdir/stdlib.php");
+require("$CONFIG->libdir/dblib.php");
+require("$CONFIG->libdir/genlib.php");
+session_start();
+session_register("sponsor");
+session_register("random");
+
+
+require_once("$CONFIG->libdir/general.php");
+
+*/
+
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    $REMOTE_ADDR = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    $REMOTE_ADDR = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+    $REMOTE_ADDR = $_SERVER['REMOTE_ADDR'];
+}
+
+function session_register($name){
+  global $$name;
+  if (!isset($_SESSION[$name])) {
+      $_SESSION[$name] = $$name;
+  }
+  $$name = &$_SESSION[$name]; 
+  $GLOBALS[$name] = &$_SESSION[$name]; 
+}
+
+if (!function_exists('mysqli_result')) {
+    function mysqli_result($res, $row, $field=0) {
+      $res->data_seek($row);
+      $datarow = $res->fetch_array();
+      return $datarow[$field];
+    }
+}
+
+foreach (array('_GET', '_POST', '_COOKIE', '_SERVER') as $_SG) {
+  foreach ($$_SG as $_SGK => $_SGV) {
+      $$_SGK = $_SGV;
+  }
+}
+
+?>

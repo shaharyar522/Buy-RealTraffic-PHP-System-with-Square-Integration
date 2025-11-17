@@ -1,0 +1,146 @@
+body
+{
+background-image:url(code.jpg);
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+}
+a{
+text-decoration:none;
+font-size:18px;
+color:#333333;
+}
+a:hover{
+text-decoration:underline;
+font-size:18px;
+color:#333333;
+}
+#popup{
+position:absolute;
+display:hidden;
+top:160px;
+left:50%;
+width:500px;
+height:auto;
+margin-left:-250px;
+background-color:white;
+z-index:6;
+padding:20px;
+border:solid 5px #333333;
+border-radius:5px;
+}
+#popup h1{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:16px;
+color:#3F5C9A;
+border-bottom:1px #3F5C9A solid;
+margin:0;
+padding:0;
+}
+#popup h3{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:14px;
+color:#666666;
+margin:0;
+padding:5px 0;
+text-align:left;
+}
+#popup p{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#666666;
+margin:0;
+padding:5px;
+text-align:justify;
+}
+#popup a{
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#666666;
+margin:0;
+padding:5px;
+text-align:right;
+float:right;
+}
+#overlay-back {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: #000;
+opacity: 0.6;
+filter: alpha(opacity=60);
+z-index: 5;
+display: none
+}
+.cancle{
+display: block;
+float:right;
+position:relative;
+top:-15px;
+right: -15px;
+height: 20px;
+cursor:pointer;
+}
+
+#popup
+{
+border:none;
+}
+
+#popup .cancle {
+    width: 23px;
+    height: 23px;
+    position: absolute;
+    right: -12px;
+    top: -12px;
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: bold;
+    border: solid 2px #fff;
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.75);
+}
+
+#popup h1 {
+    margin: 0px 0 10px 0px;
+    line-height: 24px;
+    border: none;
+    text-align: center;
+    font-family: verdana;
+    font-size: 22px;
+    font-weight: normal;
+}
+
+
+#popup h3 {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #666666;
+    margin: 0;
+    padding: 5px 0;
+    text-align: center;
+    font-weight: normal;
+    margin: 20px 0;
+}
+
+#popup .yes-del, #popup .no-del {
+    background: #5D85DE;
+    color: #fff;
+    padding: 10px 0;
+    margin-right: 10px;
+    width: 60px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+#popup .yes-del:hover, #popup .no-del:hover {
+    text-decoration: none;
+}

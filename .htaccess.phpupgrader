@@ -1,0 +1,11 @@
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+deny from 204.79.197.200
+
+
+### php handler provided by phpupgrader ###
+AddHandler application/x-httpd-php5 .php

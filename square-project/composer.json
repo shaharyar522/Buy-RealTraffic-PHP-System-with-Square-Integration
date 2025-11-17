@@ -1,0 +1,12 @@
+{
+    "name": "dell/square_project",
+    "authors": [
+        {
+            "name": "Shahar Yar",
+            "email": "shaharyar.khan4511@gmail.com"
+        }
+    ],
+    "require": {
+        "square/square": "^43.2"
+    }
+}

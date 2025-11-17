@@ -1,0 +1,10 @@
+wget http://www.ez-moneymaker.com/radmin/cron_expire_cb_page.php
+
+
+wget http://www.ez-moneymaker.com/radmin/cron_expire_url_rotator.php
+
+
+wget http://www.ez-moneymaker.com/radmin/cron_bulk_email_step1.php >/dev/null 2>&1
+
+
+wget http://www.ez-moneymaker.com/radmin/cron_bulk_email_step2.php >/dev/null 2>&1

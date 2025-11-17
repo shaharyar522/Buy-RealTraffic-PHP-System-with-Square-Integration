@@ -1,0 +1,1 @@
+[24-Mar-2018 01:35:46] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'wespac5'@'localhost' (using password: YES) in /home1/myguaran/public_html/ezmoneymaker/install/connect.php on line 12
