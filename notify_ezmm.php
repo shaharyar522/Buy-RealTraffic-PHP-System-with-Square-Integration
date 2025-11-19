@@ -26,6 +26,8 @@ $txn_id= $_POST['tr_id'];
 $payerAccount=$_POST['payerAccount'];
 
 
+
+
  $sql = "INSERT INTO  url_login_transactions (id, user_id, login_quantity, login_item_name, login_product_description, login_amount, login_purchase_date, login_transaction_id,  login_processor,  login_payer_email)
     VALUES (NULL ,  '$payer_id',  '$myItemCode',  '$item_name',  '$payment_gross',  '$amount',  '$payment_date',  '$txn_id', '$login_processor',  '$payer_email')";
 

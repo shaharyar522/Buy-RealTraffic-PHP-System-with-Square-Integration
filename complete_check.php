@@ -2,19 +2,9 @@
 include'config.php';
 $title="$CONFIG->sitename join form";
 include("$CONFIG->templatedir/header.php");
-
-
-
 //$found_sponsor=$_SESSION["sponsor"]["username"];
-
-
 if(  $_SESSION["sponsor"]["firstname"] ==null  ) {  $_SESSION["sponsor"]["firstname"]= 'Mike'; }
 if(  $_SESSION["sponsor"]["email"]==null  ){   $_SESSION["sponsor"]["email"] = 'admin@buy-realtraffic.com';   }
-
-
-
-
-
 
 $rands=$_SESSION["random"]["username"] ?? '';
 $frm = $_POST;$err=0;     

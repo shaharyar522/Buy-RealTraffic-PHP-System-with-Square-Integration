@@ -8,6 +8,7 @@ if(   ($_POST['txn_id'] !=null) && ($_POST['payment_status'] =='Completed')  ){
 	$q= mysqli_query($GLOBALS["___mysqli_ston"], "UPDATE users  set membership_status= 'Pro Member'	WHERE username ='". $_MYVAR['five5']  ."' and id>'1' "); 
 
 
+	
 
 //        parse_str($_POST['custom'],$_MYVAR);
 
@@ -18,6 +19,8 @@ if(   ($_POST['txn_id'] !=null) && ($_POST['payment_status'] =='Completed')  ){
 	$subject = "TRANSACTION VERIFICATION";
 	$subject_sponsor = $_MYVAR['three3']; 	
 	$subject_sponsor .=", Did You Receive A Payment From This Buyer?";
+
+
 
 	$message = "
 	<html>
